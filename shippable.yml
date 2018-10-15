@@ -3,9 +3,9 @@ language: java
 jdk:
   - oraclejdk8
 
-integrations:
-  generic:
-    - integrationName: drship_nexus
+#integrations:
+#  generic:
+#    - integrationName: drship_nexus
 
 env:
   global:
@@ -30,33 +30,33 @@ build:
 
 # OPTIONAL: if you want to use custom Docker Build Image and also store information in a params
 # resource to be used in downstream Assembly Lines
-  pre_ci:
-    - export IMG_TAG=$(shipctl get_resource_version_key build_custom_ci_img_dh "versionName")
+#  pre_ci:
+#    - export IMG_TAG=$(shipctl get_resource_version_key build_custom_ci_img_dh "versionName")
 
-  pre_ci_boot:
-    image_name: devopsrecipes/build_custom_ci
-    image_tag: $IMG_TAG
-    pull: true
+#  pre_ci_boot:
+#    image_name: devopsrecipes/build_custom_ci
+##    image_tag: $IMG_TAG
+#    pull: true
 
-  on_success:
-    - shipctl put_resource_state_multi war_loc "versionName=$artifact_version" "artifact_version=$artifact_version" "group_id=$group_id" "artifact_id=$artifact_id"
-    - shipctl put_resource_state_multi war_loc "artifact_extension=$artifact_extension" "repository_url=$repository_url" "build_nbr=$BUILD_NUMBER"
+#  on_success:
+#    - shipctl put_resource_state_multi war_loc "versionName=$artifact_version" "artifact_version=$artifact_version" "group_id=$group_id" "artifact_id=$artifact_id"
+#    - shipctl put_resource_state_multi war_loc "artifact_extension=$artifact_extension" "repository_url=$repository_url" "build_nbr=$BUILD_NUMBER"
 
-resources:
-  - name: war_loc
-    type: params
-    versionTemplate:
-      params:
-        seed: true
+#resources:
+#  - name: war_loc
+#    type: params
+#    versionTemplate:
+#      params:
+#        seed: true
 
-jobs:
-  - name: java_web_app_runCI
-    type: runCI
-    dependencyMode: strict
-    triggerMode: parallel
-    steps:
-      - IN: build_custom_ci_img_dh
-      - IN: gcp_nexus_info
-      - OUT: war_loc
-    flags:
-      - war
+#jobs:
+#  - name: java_web_app_runCI
+#    type: runCI
+#    dependencyMode: strict
+#    triggerMode: parallel
+#    steps:
+#      - IN: build_custom_ci_img_dh
+#      - IN: gcp_nexus_info
+#     - OUT: war_loc
+#    flags:
+#      - war
